@@ -1,0 +1,24 @@
+package main
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/golang-jwt/jwt/v5"
+)
+
+func main() {
+	secret := "your-very-secret-key"
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"name": "Thakrit",
+		"exp":  time.Now().Add(time.Hour * 72).Unix(),
+	})
+
+	t, err := token.SignedString([]byte(secret))
+	if err != nil {
+		fmt.Printf("Error signing token: %v\n", err)
+		return
+	}
+
+	fmt.Printf("Generated Token:\n%s\n", t)
+}
