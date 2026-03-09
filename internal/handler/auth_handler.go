@@ -31,6 +31,9 @@ func NewAuthHandler(cfg *config.Config) *AuthHandler {
 	return &AuthHandler{cfg: cfg}
 }
 
+// Middleware
+// - Updated `internal/middleware/auth.go` to support custom claims extraction using `NewClaimsFunc`.
+// - Added a `Skipper` function to `AuthMiddleware` to explicitly allow access to `/api/v1/auth/token` without authentication.
 // GenerateToken handles token generation
 func (h *AuthHandler) GenerateToken(c echo.Context) error {
 	req := new(AuthRequest)
