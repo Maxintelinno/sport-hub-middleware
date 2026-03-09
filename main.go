@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Maxintelinno/sport-hub-middleware/internal/config"
+	"github.com/Maxintelinno/sport-hub-middleware/internal/handler"
 	"github.com/Maxintelinno/sport-hub-middleware/internal/middleware"
 	"github.com/labstack/echo/v4"
 	echoMiddleware "github.com/labstack/echo/v4/middleware"
@@ -20,11 +21,16 @@ func main() {
 	e.Use(echoMiddleware.Logger())
 	e.Use(echoMiddleware.Recover())
 
+	// Handlers
+	authHandler := handler.NewAuthHandler(cfg)
+
 	// Routes
 	// Public route
 	e.GET("/public", func(c echo.Context) error {
 		return c.String(http.StatusOK, "This is a public endpoint")
 	})
+
+	e.POST("/api/v1/auth/token", authHandler.GenerateToken)
 
 	// Protected group
 	api := e.Group("/api")

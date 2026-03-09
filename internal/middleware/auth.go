@@ -2,6 +2,8 @@ package middleware
 
 import (
 	"github.com/Maxintelinno/sport-hub-middleware/internal/config"
+	"github.com/Maxintelinno/sport-hub-middleware/internal/handler"
+	"github.com/golang-jwt/jwt/v5"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 )
@@ -10,8 +12,9 @@ import (
 func AuthMiddleware(cfg *config.Config) echo.MiddlewareFunc {
 	return echojwt.WithConfig(echojwt.Config{
 		SigningKey: []byte(cfg.JWTSecret),
-		// Optional: you can define a custom context key for the user
-		// ContextKey: "user",
+		NewClaimsFunc: func(c echo.Context) jwt.Claims {
+			return new(handler.JWTClaims)
+		},
 	})
 }
 
