@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/Maxintelinno/sport-hub-middleware/internal/config"
 	"github.com/Maxintelinno/sport-hub-middleware/internal/handler"
@@ -48,6 +49,11 @@ func main() {
 		})
 	})
 
-	// Start server
-	e.Logger.Fatal(e.Start(":8080"))
+	// Start Server
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	e.Logger.Fatal(e.Start(":" + port))
 }
